@@ -1,0 +1,26 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <%= motion.subject %>
+      <% if current_user && motion.user.id == current_user.id -%>
+        <span class="pull-right">
+          <%= link_to 'Edit', edit_motion_path(motion), class: 'btn btn-default btn-xs' %>
+        </span>
+      <% end -%>
+    </h3>
+    <div class="pull-right">
+      <span class="badge badge-with-border">
+        <%= "#{motion.user.username}, #{motion.created_at.strftime('%B %d, %Y | %I:%M %p')}" %>
+      </span>
+    </div>
+  </div>
+  <div class="panel-body">
+    <%= motion.description.html_safe %>
+  </div>
+
+  <div class="rating pull-right pull-down">
+      <%= button_to motion_rating_path(motion_id: motion.id), remote: true, method: :post, class: "btn btn-xs btn-#{motion.rating.where(user: current_user).exists? ? 'warning' : 'default'}" do %>
+        Upvote <span class="badge motion-<%= motion.id %>-upvote-count"><%= motion.rating.count %></span>
+      <% end %>
+  </div>
+</div>

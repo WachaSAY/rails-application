@@ -1,0 +1,32 @@
+  <% if current_user && response.user.id == current_user.id -%>
+    <span class="pull-right">
+      <div class="label label-info">Edit it at <%= link_to 'home page', motion_path(response.motion) %></div>
+    </span>
+    <span class="pull-right">
+      <%= link_to 'View', motion_response_path(response), class: 'btn-default btn-xs badge' %>&nbsp;
+    </span>
+
+  <% else %>
+    <div class="pull-right">
+      &nbsp;
+      <%= link_to (response.user.account_picture? ? image_tag(response.user.account_picture_url(:thumb)) : image_tag('default-dp.png', width: 50)), users_account_path(u: response.user.username) %>
+      &nbsp;
+    </div>
+    <div class="pull-right">
+      <span class="badge"><%= "#{response.user.username}, #{response.created_at.strftime('%B %d, %Y | %I:%M %p')}" %>
+      </span>
+    </div>
+    <div class="pull-right">
+      <%= link_to 'Intercept', motion_response_path(response), class: 'btn-default btn-xs badge' %>&nbsp;
+    </div>
+
+    <div class="rating pull-right pull-up">
+      <%= button_to motion_rating_path(response_id: response.id), remote: true, method: :post, class: "btn btn-xs btn-#{response.rating.where(user: current_user).exists? ? 'warning' : 'default'}" do %>
+        Upvote <span class="badge response-<%= response.id %>-upvote-count"><%= response.rating.count %></span>
+      <% end %>
+    </div>
+  <% end -%>
+
+<div class="content">
+  <%= response.description.html_safe %>
+</div>

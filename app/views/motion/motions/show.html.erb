@@ -1,0 +1,29 @@
+<%= javascript_include_tag 'details_on_hover_manager' %>
+
+<%= render partial: '/motion/motions', locals: { motion: @motion } %>
+
+<% if current_user && @motion.responses.where(user: current_user).exists? %>
+  <p class="label label-info">
+    You have already registered your response. You can edit it <a href="#<%= "#{current_user.username}-response" %>">here</a>
+  </p>
+<% end %>
+<br><br>
+
+<div class="motion-fronts row">
+  <span class="pull-right add-front-plus-sign">
+    <%= link_to '', new_motion_front_path(m: @motion.id), class: 'btn btn-default btn-sm glyphicon glyphicon-plus', title: 'Add new front', :'data-toggle' => "tooltip", :'data-placement' => "left" %>
+    <button id="show-fronts-button" type="button" data-toggle="tooltip" data-placement="left" class="btn btn-default btn-sm glyphicon glyphicon-backward" title="Show all fronts"></button>
+  </span>
+
+  <div class="col-md-4 fronts">
+    <%= render partial: 'front_with_responses', locals: {front: @for_front, response: @response, motion: @motion} %>
+  </div>
+
+  <div class="col-md-4 fronts">
+    <%= render partial: 'front_with_responses', locals: {front: @neutral_front, response: @response, motion: @motion} %>
+  </div>
+
+  <div class="col-md-4 fronts">
+    <%= render partial: 'front_with_responses', locals: {front: @against_front, response: @response, motion: @motion} %>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div id="<%= "#{response.user.username}-response" %>" class="well well-sm response-container">
+
+  <% if current_user && response.user.id == current_user.id -%>
+  <div class="hover-info">
+    <!-- Trigger the modal with a button -->
+    <a data-toggle="modal" data-target="#edit-form">Edit</a>
+    <%= link_to 'View', motion_response_path(response) %>
+  </div>
+
+  <!-- Modal -->
+  <div id="edit-form" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><%= response.description.html_safe %></h4>
+        </div>
+        <div class="modal-body">
+          <%= form_for(response, url: motion_response_path(front: front.id), html: { method: :patch, class: 'form-group' }) do |f| %>
+
+            <%= f.hidden_field :id, value: response.id %>
+            <%= f.text_area :description, rows: 6, class: 'form-control input-sm textarea-edit-response', placeholder: 'Register your response', required: true %>
+            <br>
+            <%= f.submit 'Update', class: 'btn btn-success btn-sm update-response-button' %>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <% else %>
+    <div class="hover-info">
+      <div class="rating">
+        <%= button_to motion_rating_path(response_id: response.id), remote: true, method: :post, class: "btn btn-xs btn-#{response.rating.where(user: current_user).exists? ? 'warning' : 'default'}" do %>
+          Upvote <span class="badge response-<%= response.id %>-upvote-count"><%= response.rating.count %></span>
+        <% end %>
+      </div>
+      <%= link_to 'Interject', motion_response_path(response) %>
+    </div>
+
+  <% end -%>
+
+<%= response.description.html_safe %>
+</div>

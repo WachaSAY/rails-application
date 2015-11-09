@@ -1,0 +1,5 @@
+<%= form_for(form_target, url: target_url, html: { method: target_method, class: 'form-inline' }) do |f| %>
+
+  <%= f.text_area :description, class: 'form-control input-sm', placeholder: 'Register your response', required: true, cols: 50 %>
+  <%= f.submit submit_button_name, class: 'btn btn-success btn-xs' %>
+<% end %>

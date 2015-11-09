@@ -1,0 +1,55 @@
+<%= javascript_include_tag 'datepicker_manager' %>
+
+<h2>Edit Personal Details</h2>
+
+<%= form_for(@user, url: users_account_path, html: { method: :put, multipart: true, class: 'form-horizontal' }) do |f| %>
+
+  <div class="field form-group">
+    <%= f.label :first_name, class: 'col-md-3 control-label' %>
+    <div class="col-md-7">
+      <%= f.text_field :first_name, autofocus: true, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :last_name, class: 'col-md-3 control-label' %>
+    <div class="col-md-7">
+      <%= f.text_field :last_name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :dob, 'Date of Birth', class: 'col-md-3 control-label' %>
+    <div class="col-md-7">
+      <%= f.text_field :dob, class: 'form-control datepicker-element' %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :gender, class: 'col-md-3 control-label' %>
+    <div class="col-md-7">
+      <%= f.text_field :gender, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="field form-group">
+    <%= f.label :account_picture, class: 'col-md-3 control-label' %>
+    <div class="col-md-4">
+      <%= f.file_field :account_picture, class: 'btn btn-danger' %>
+      <%= f.hidden_field :account_picture_cache %>
+    </div>
+    <div class="col-md-4">
+      <%= image_tag(@user.account_picture_url, class: 'media-object', alt: @user.username, width: 150) if @user.account_picture %>
+    </div>
+  </div>
+
+  <div class="actions form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+      <%= f.submit "Update", class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
+
+<%= link_to "Back", :back %>
+
+</div>

@@ -1,0 +1,5 @@
+<%= form_for(response, url: motion_responses_path(front: front.id), html: { method: :post, class: 'form-inline' }) do |f| %>
+
+  <%= f.text_area :description, class: 'form-control input-sm textarea-create-response', placeholder: 'Register your response', required: true %>
+  <span><%= f.submit 'Enter', class: 'btn btn-success btn-xs' %></span>
+<% end %>

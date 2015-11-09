@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WachaSAY</title>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <div class="test-header">
+    <h1>Website Header</h1>
+  </div>
+
+  <div class="test-main-container">
+    <div class="test-left-container">
+      <h4>Left Menu</h4>
+    </div>
+
+    <div class="test-content-container">
+      <%= yield %>
+    </div>
+  </div>
+</body>
+</html>

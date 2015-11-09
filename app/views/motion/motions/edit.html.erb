@@ -1,0 +1,26 @@
+<%= javascript_include_tag 'wysiwyg_manager' %>
+
+<h1>Edit Motion</h1>
+
+<%= form_for(@motion, url: motion_path, html: { method: :patch, class: 'form-horizontal' }) do |f| %>
+  <div class="form-group">
+    <%= f.label :subject, class: 'col-md-3 control-label' %>
+    <div class="col-md-7">
+      <%= f.text_field :subject, autofocus: true, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description, class: 'col-md-3 control-label' %>
+    <div class="col-md-9">
+      <%= f.text_area :description, rows: 10, class: 'form-control wysiwyg-textbox' %>
+    </div>
+  </div>
+
+  <div class="actions form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+      <%= f.submit "Update", class: 'btn btn-primary' %>
+    </div>
+  </div>
+
+<% end %>

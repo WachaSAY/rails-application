@@ -1,0 +1,75 @@
+<%= javascript_include_tag 'account_picture_manager' %>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title"><%= "#{@user.first_name.try(:capitalize)} #{@user.last_name.try(:capitalize)}" %></h3>
+  </div>
+  <div class="panel-body">
+    <div class="media">
+      <div class="media-left media-middle">
+        <a class="account-picture-icon" href="#">
+          <%= @user.account_picture? ? image_tag(@user.account_picture_url, class: 'media-object', alt: @user.username, width: 150) : image_tag('default-dp.png', class: 'media-object', alt: @user.username, width: 150)  %>
+        </a>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">Personal Details</h4>
+          <div class="row">
+            <div class="col-md-offset-1 col-md-5">Name</div>
+            <div class="col-md-5"><%= "#{@user.first_name.try(:capitalize)} #{@user.last_name.try(:capitalize)}" %></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-offset-1 col-md-5">Username</div>
+            <div class="col-md-5"><%= @user.username %></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-offset-1 col-md-5">Email</div>
+            <div class="col-md-5"><%= @user.email %></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-offset-1 col-md-5">Date of Birth</div>
+            <div class="col-md-5"><%= @user.dob.blank? ? 'Unknown' : @user.dob.strftime('%B %d, %Y') %></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-offset-1 col-md-5">Gender</div>
+            <div class="col-md-5"><%= @user.gender.blank? ? 'Unknown' : @user.gender  %></div>
+          </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pull-right">
+<% if @user.id == current_user.id -%>
+  <%= link_to 'Edit Personal Details', edit_users_account_path, class: 'btn btn-primary' %>
+
+  <%= link_to 'Edit Account Details', edit_user_registration_path, class: 'btn btn-primary' %>
+<% end -%>
+</div>
+
+<!-- Trigger the modal with a button -->
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#display-picture-modal"  id="display-picture-modal-trigger-button">Open Account Picture</button>
+
+<!-- Modal -->
+<div id="display-picture-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-full-picture">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><%= @user.username %></h4>
+      </div>
+      <div class="modal-body">
+        <div>
+          <%= image_tag(@user.account_picture_url, class: 'media-object account-picture-image', alt: @user.username) if @user.account_picture %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

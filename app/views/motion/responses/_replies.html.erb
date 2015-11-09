@@ -1,0 +1,33 @@
+<%= reply.description.html_safe %>
+
+<% if reply.user.id == current_user.id %>
+<div class="right-icons">
+  <div class="pull-right">
+     <a class='btn-default btn-xs badge reply-edit-button' toggle-text="Hide">Edit</a>&nbsp;
+  </div>
+</div>
+
+<div class="reply-edit-form">
+  <%= form_for(reply, url: motion_reply_path(comment: comment.id), html: { method: :patch, class: 'form-inline' }) do |f| %>
+    <%= f.text_area :description, class: 'form-control input-sm', placeholder: 'Register your response', required: true, cols: 50 %>
+    <%= f.submit 'Enter', class: 'btn btn-success btn-xs' %>
+  <% end %>
+</div>
+<% else %>
+<div class="right-icons">
+  <div class="pull-right">
+    &nbsp;<%= link_to (reply.user.account_picture? ? image_tag(reply.user.account_picture_url(:thumb)) : image_tag('default-dp.png', width: 50)), users_account_path(u: reply.user.username) %>&nbsp;
+  </div>
+  <div class="pull-right">
+    <span class="badge">
+      <%= "#{reply.user.username}, #{reply.created_at.strftime('%B %d, %Y | %I:%M %p')}" %>
+    </span>
+  </div>
+
+  <div class="rating pull-right pull-up">
+    <%= button_to motion_rating_path(reply_id: reply.id), remote: true, method: :post, class: "btn btn-xs btn-#{reply.rating.where(user: current_user).exists? ? 'warning' : 'default'}" do %>
+      Upvote <span class="badge reply-<%= reply.id %>-upvote-count"><%= reply.rating.count %></span>
+    <% end %>
+  </div>
+</div>
+<% end %>

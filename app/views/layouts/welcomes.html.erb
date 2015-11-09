@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WachaSAY</title>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<div id="main-container">
+<div class="container">
+  <div class="row" style="min-height: 120px;"></div>
+  <div class="col-md-2">
+    <h5><em>Trending</em></h5>
+      <% Tag.order(day_hitpoints: :desc).limit(10).each do |t| %>
+          <span class="label label-primary"><%= t.name %></span>
+      <% end %>
+  </div>
+  <div class="col-md-10">
+    <% if notice -%>
+
+      <div class="notice alert alert-info alert-dismissible fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= notice %>
+      </div>
+    <% end -%>
+
+    <% if alert -%>
+
+      <div class="notice alert alert-danger alert-dismissible fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= alert %>
+      </div>
+    <% end -%>
+
+    <% if success -%>
+
+      <div class="notice alert alert-success alert-dismissible fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= success %>
+      </div>
+    <% end -%>
+
+    <%= yield %>
+  </div>
+</div>
+
+</div> <!-- #main-container -->
+
+<footer id="footer" style="position: fixed;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <h4>Links</h4>
+        <a href="#"><span class='badge'>About Us</span></a><br>
+        <a href="#"><span class='badge'>Blog</span></a><br>
+        <a href="#"><span class='badge'>Support</span></a><br>
+        <a href="#"><span class='badge'>FAQ</span></a><br>
+      </div>
+      <div class="col-md-3">
+        <br>
+        <a href="#">
+          <%= image_tag('fb-icon.png', width: 50) %>
+        </a>
+        <a href="#">
+          <%= image_tag('twitter-icon.png', width: 50) %>
+        </a>
+      </div>
+    </div>
+
+    <br>
+    <div class="row">
+      <div class="col-sm-offset-3 col-sm-6">
+        <span>&copy; wachasay.com, All Rights Reserved</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

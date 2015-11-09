@@ -1,0 +1,31 @@
+.test-main-container {
+  padding-top: 10vh;
+  margin: 0;
+  min-height: 90vh;
+}
+
+.test-left-container {
+  width: 20%;
+  margin: 0;
+  min-height: inherit;
+  /*background-color: grey;*/
+  border-right: 1px solid #000;
+  float: left;
+}
+
+.test-content-container {
+  width: 80%;
+  margin: 0;
+  min-height: inherit;
+  float: right;
+  padding: 10px;
+}
+
+.test-header {
+  position: fixed;
+  min-height: 10vh;
+  width: 100%;
+  border-bottom: 1px solid #000;
+  z-index: 999;
+  background-color: grey;
+}

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WachaSAY</title>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <%= javascript_include_tag 'notification_manager' %>
+
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<div id="main-container">
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        <%= image_tag('logo.png', alt: 'WachaSAY', id: 'logo') %>
+      </a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active">
+         <!--  <a href="#">Link <span class="sr-only">(current)</span></a> -->
+          <%= link_to 'New Motion', new_motion_path %>
+        </li>
+        <li><%= link_to 'Digest', users_digest_path %></li>
+        <!-- <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li> -->
+      </ul>
+      <div class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <%= form_tag search_path, class: 'form-inline', method: :get do %>
+            <%= text_field_tag :q, session[:q], class: 'form-control', placeholder: 'Search' %>
+            <%= submit_tag 'Search', class: 'btn btn-default' %>
+          <% end %>
+        </div>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+
+        <% if current_user %>
+          <li>
+            <%= link_to current_user.email, users_account_path %>
+          </li>
+
+          <li>
+            <a class="notification-button">
+              Notifications
+              <% notifications = Mention.where(target_user: current_user, read: false) %>
+              <span class="badge"><%= notifications.size %></span>
+            </a>
+            <div class="notification-box">
+              <% notifications.each do |n| %>
+                <div>
+                  <div class="pull-left">
+                    &nbsp;<%= link_to (n.targeting_user.account_picture? ? image_tag(n.targeting_user.account_picture_url(:thumb)) : image_tag('default-dp.png', width: 50)), users_account_path(u: n.targeting_user.username) %>&nbsp;
+                  </div>
+                  <%= link_to "#{n.mentionable.description[0..40]}...", n.show_url %>
+                </div>
+              <% end %>
+            </div>
+          </li>
+
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><%= link_to 'Profile', users_account_path %></li>
+              <li><a href="#">My Says</a></li>
+              <li><%= link_to 'My Motions', motions_path %></li>
+              <li role="separator" class="divider"></li>
+              <li><%= button_to 'Logout', destroy_user_session_path, method: :delete, class: 'btn btn-sm btn-danger col-sm-offset-1 col-md-10' %></li>
+            </ul>
+          </li>
+
+        <% else %>
+          <li><div>
+            <%= link_to 'Sign In', new_user_session_path, class: 'btn btn-success btn-sm navbar-btn' %>&nbsp;
+          </div></li>
+          <li><div>
+            <%= link_to 'Sign Up', new_user_registration_path, class: 'btn btn-primary btn-sm navbar-btn' %>
+          </div></li>
+        <% end %>
+
+
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container">
+  <div class="col-md-2">
+    <h5><em>Trending</em></h5>
+    <% Tag.order(day_hitpoints: :desc).limit(10).each do |t| %>
+      <span class="label label-danger"><%= t.name %></span>
+    <% end %>
+
+    <br><br>
+
+    <% if current_user -%>
+      <h5><em>Your Tags</em></h5>
+      <span class="label label-primary">Tag 1</span>
+      <span class="label label-primary">Tag 2</span>
+      <span class="label label-primary">Tag 3</span>
+      <span class="label label-primary">Tag 4</span>
+      <span class="label label-primary">Tag 5</span>
+    <% end -%>
+
+    <hr>
+
+    <% if controller_name == 'motions' && action_name == 'show' %>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title"><em>Related Motions</em></h4>
+        </div>
+        <div class="panel-body">
+          Coming Soon!
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+  <div class="col-md-10">
+    <% if notice -%>
+
+      <div class="notice alert alert-info alert-dismissible fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= notice %>
+      </div>
+    <% end -%>
+
+    <% if alert -%>
+
+      <div class="notice alert alert-danger alert-dismissible fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= alert %>
+      </div>
+    <% end -%>
+
+    <% if success -%>
+
+      <div class="notice alert alert-success alert-dismissible fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= success %>
+      </div>
+    <% end -%>
+
+    <%= yield %>
+  </div>
+</div>
+
+<div class="push"></div>
+
+</div> <!-- #main-container -->
+
+<footer id="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <h4>Links</h4>
+        <a href="#"><span class='badge'>About Us</span></a><br>
+        <a href="#"><span class='badge'>Blog</span></a><br>
+        <a href="#"><span class='badge'>Support</span></a><br>
+        <a href="#"><span class='badge'>FAQ</span></a><br>
+      </div>
+      <div class="col-md-3">
+        <br>
+        <a href="#">
+          <%= image_tag('fb-icon.png', width: 50) %>
+        </a>
+        <a href="#">
+          <%= image_tag('twitter-icon.png', width: 50) %>
+        </a>
+      </div>
+    </div>
+
+    <br>
+    <div class="row">
+      <div class="col-sm-offset-3 col-sm-6">
+        <span>&copy; wachasay.com, All Rights Reserved</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

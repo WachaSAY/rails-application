@@ -1,0 +1,73 @@
+<%= javascript_include_tag 'comment_reply_manager' %>
+<%= javascript_include_tag 'edit_comment_manager' %>
+<%= javascript_include_tag 'edit_reply_manager' %>
+
+<h2>Response</h2>
+<%= render partial: '/motion/motions', locals: { motion: @motion } %>
+
+<div class="fronts">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        <%= @front.name %>
+      </h3>
+    </div>
+    <div class="panel-body response">
+      <div class="pull-right">
+        &nbsp;<%= link_to (@response.user.account_picture? ? image_tag(@response.user.account_picture_url(:thumb)) : image_tag('default-dp.png', width: 50)), users_account_path(u: @response.user.username) %>&nbsp;
+      </div>
+      <div class="pull-right">
+        <span class="badge">
+          <%= "#{@response.user.username}, #{@response.created_at.strftime('%B %d, %Y | %I:%M %p')}" %>
+        </span>
+      </div>
+      <% if @response.user.id == current_user.id %>
+        <div class="pull-right">
+          <div class="label">
+            <%= link_to 'Delete', motion_response_path(@response), method: :delete, class: 'btn btn-xs btn-danger', data: { confirm: 'Are you sure?' } %>
+          </div>
+          <div class="label label-info">
+            Edit it at <%= link_to 'home page', motion_path(@response.motion) %>
+          </div>
+        </div>
+      <% else %>
+
+        <div class="rating pull-right pull-up">
+          <%= button_to motion_rating_path(response_id: @response.id), remote: true, method: :post, class: "btn btn-xs btn-#{@response.rating.where(user: current_user).exists? ? 'warning' : 'default'}" do %>
+            Upvote <span class="badge reply-<%= @response.id %>-upvote-count"><%= @response.rating.count %></span>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div class="content">
+        <%= @response.description.html_safe %>
+      </div>
+
+      <div class="comments">
+        <% if current_user && @response.comments.where(user: current_user).exists? %>
+          <p class="label label-info">
+            You have already registered your response. You can edit it <a href="#<%= "#{current_user.username}-comment" %>" class="">here</a>
+          </p>
+        <% elsif @response.user.id == current_user.id %>
+          <p class="label label-info">You can't comment on your own response!</p>
+        <% end %>
+
+        <% if current_user && @response.user.id != current_user.id && !@response.comments.where(user: current_user).exists? %>
+          <div class="cmmnt">
+            <%= render partial: '/motion/form_for_any_response', locals: { form_target: @comment, target_url: motion_comments_path(response: @response.id), target_method: :post, submit_button_name: 'Enter' } %>
+          </div>
+        <% end %>
+
+        <% @response.comments.reject{ |c| c.new_record? }.each do |c| %>
+          <div class="comment-container">
+            <%= render partial: 'comments', locals: { comment: c, response: @response } %>
+          </div>
+        <% end %>
+      </div>
+
+      <% @all_responses.each do |r| %>
+        <%= render partial: 'responses', locals: { response: r } %>
+      <% end %>
+    </div>
+  </div>
+</div>

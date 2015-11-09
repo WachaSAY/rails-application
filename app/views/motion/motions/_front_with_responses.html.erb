@@ -1,0 +1,24 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="panel-title">
+      <span><%= front.name %></span>
+    </div>
+    <% unless front.responses.exists? %>
+      <span class="pull-right label label-info">No response related to this front</span>
+    <% end %>
+  </div>
+  <div class="panel-body">
+    <% unless current_user && motion.responses.where(user: current_user).exists? %>
+      <%= form_for(response, url: motion_responses_path(front: front.id), html: { method: :post, class: 'form-inline' }) do |f| %>
+
+        <%= f.text_area :description, class: 'form-control input-sm textarea-create-response', placeholder: 'Register your response', required: true %>
+        <span><%= f.submit 'Enter', class: 'btn btn-success btn-xs' %></span>
+      <% end %>
+      <br>
+    <% end %>
+
+    <% front.responses.each do |r| %>
+      <%= render partial: 'responses', locals: { response: r, front: front } %>
+    <% end %>
+  </div>
+</div>

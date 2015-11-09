@@ -1,0 +1,24 @@
+<h2>Search Results</h2>
+
+<% @motions.each do |m| %>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        <%= link_to m.subject, motion_path(m) %>
+      </h3>
+      <div class="pull-right">
+        &nbsp;
+        <%= link_to (m.user.account_picture? ? image_tag(m.user.account_picture_url(:thumb)) : image_tag('default-dp.png', width: 50)), users_account_path(u: m.user.username) %>
+      </div>
+      <div class="pull-right">
+        <span class="badge badge-with-border">
+          <%= "#{m.user.username}, #{m.created_at.strftime('%B %d, %Y | %I:%M %p')}" %>
+        </span>
+      </div>
+    </div>
+    <div class="panel-body">
+      <%= m.description.html_safe %>
+      <em><%= link_to 'Read More', motion_path(m) %></em>
+    </div>
+  </div>
+<% end %>

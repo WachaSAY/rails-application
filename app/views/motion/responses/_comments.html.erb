@@ -1,0 +1,57 @@
+<div id="<%= "#{comment.user.username}-comment" %>" class="cmmnt">
+  <%= comment.description.html_safe %>
+
+  <% if comment.user.id == current_user.id %>
+    <div class="right-icons">
+      <div class="pull-right">
+        <a class='btn-default btn-xs badge comment-edit-button' toggle-text="Hide">Edit</a>&nbsp;
+      </div>
+    </div>
+
+    <div class="comment-edit-form">
+      <%= render partial: '/motion/form_for_any_response', locals: { form_target: comment, target_url: motion_comments_path(response: response.id), target_method: :patch, submit_button_name: 'Update' } %>
+    </div>
+  <% else %>
+    <div class="right-icons">
+      <div class="pull-right">
+        &nbsp;<%= link_to (comment.user.account_picture? ? image_tag(comment.user.account_picture_url(:thumb)) : image_tag('default-dp.png', width: 50)), users_account_path(u: comment.user.username) %>&nbsp;
+      </div>
+      <div class="pull-right">
+        <span class="badge"><%= "#{comment.user.username}, #{comment.created_at.strftime('%B %d, %Y | %I:%M %p')}" %></span>
+      </div>
+
+      <div class="rating pull-right pull-up">
+        <%= button_to motion_rating_path(comment_id: comment.id), remote: true, method: :post, class: "btn btn-xs btn-#{comment.rating.where(user: current_user).exists? ? 'warning' : 'default'}" do %>
+          Upvote <span class="badge comment-<%= comment.id %>-upvote-count"><%= comment.rating.count %></span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @response.user.id == current_user.id %>
+    <div class="right-icons">
+      <div class="pull-right">
+        <% unless comment.replies.exists? %>
+          <a class='btn-default btn-xs badge comment-reply-button' toggle-text="Hide">Reply</a>&nbsp;
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<% if @response.user.id == current_user.id && !comment.replies.exists? %>
+  <div class="reply comment-reply-form">
+    <%= form_for(@reply, url: motion_replies_path(comment: comment.id), html: { method: :post, class: 'form-inline' }) do |f| %>
+      <%= f.text_area :description, class: 'form-control input-sm', placeholder: 'Register your response', required: true, cols: 50 %>
+      <%= f.submit 'Enter', class: 'btn btn-success btn-xs' %>
+    <% end %>
+  </div>
+<% end %>
+
+<% if comment.replies.exists? %>
+<div class="reply">
+  <% comment.replies.each do |r| %>
+    <%= render partial: 'replies', locals: { reply: r, comment: comment } %>
+  <% end %>
+</div>
+<% end %>

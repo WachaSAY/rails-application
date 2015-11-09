@@ -1,0 +1,23 @@
+<h2>Create new front for motion <span class="badge"><%= @front.motion.subject %></span></h2>
+
+<%= form_for(@front, url: motion_fronts_path, html: { method: :post, class: 'form-horizontal' }) do |f| %>
+  <div class="form-group">
+    <%= f.label :name, class: 'col-md-3 control-label' %>
+    <div class="col-md-7">
+      <%= f.text_field :name, autofocus: true, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description, class: 'col-md-3 control-label' %>
+    <div class="col-md-9">
+      <%= f.text_area :description, rows: 10, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="actions form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+      <%= f.submit "Create", class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
