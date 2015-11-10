@@ -1,5 +1,5 @@
 class Front < ActiveRecord::Base
-  FRONT_CATEGORIES = { for: 0, against: 1 , neutral: 2, custom: 3}
+  FRONT_CATEGORIES = { for: 0, against: 1 , neutral: 2, custom: 3, common: 4}
 
   validates :name, :category, :motion, :user, presence: true
   belongs_to :motion
@@ -12,6 +12,6 @@ class Front < ActiveRecord::Base
   end
 
   def front_category=(value)
-    self.type = FRONT_CATEGORIES[value]
+    self.category = FRONT_CATEGORIES[value]
   end
 end

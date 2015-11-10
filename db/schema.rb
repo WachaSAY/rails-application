@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151030073614) do
+ActiveRecord::Schema.define(version: 20151110130520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,11 +48,13 @@ ActiveRecord::Schema.define(version: 20151030073614) do
   end
 
   create_table "motions", force: :cascade do |t|
-    t.string   "subject",     default: "", null: false
+    t.string   "subject",                 default: "", null: false
     t.text     "description"
     t.integer  "user_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.boolean  "default_fronts_enabled"
+    t.boolean  "multiple_fronts_enabled"
   end
 
   create_table "ratings", force: :cascade do |t|
@@ -122,11 +124,15 @@ ActiveRecord::Schema.define(version: 20151030073614) do
     t.date     "dob"
     t.string   "gender"
     t.string   "account_picture"
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["provider"], name: "index_users_on_provider", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["uid"], name: "index_users_on_uid", using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
 end

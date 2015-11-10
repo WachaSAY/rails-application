@@ -1,6 +1,6 @@
-<h2>Create new front for motion <span class="badge"><%= @front.motion.subject %></span></h2>
+<h2>Create new front for motion <span class="badge"><%= @motion.subject %></span></h2>
 
-<%= form_for(@front, url: motion_fronts_path, html: { method: :post, class: 'form-horizontal' }) do |f| %>
+<%= form_for(@front, url: motion_fronts_path(m: @motion), html: { method: :post, class: 'form-horizontal' }) do |f| %>
   <div class="form-group">
     <%= f.label :name, class: 'col-md-3 control-label' %>
     <div class="col-md-7">

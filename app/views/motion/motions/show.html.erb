@@ -9,21 +9,19 @@
 <% end %>
 <br><br>
 
-<div class="motion-fronts row">
+<% if @motion.multiple_fronts_enabled %>
   <span class="pull-right add-front-plus-sign">
     <%= link_to '', new_motion_front_path(m: @motion.id), class: 'btn btn-default btn-sm glyphicon glyphicon-plus', title: 'Add new front', :'data-toggle' => "tooltip", :'data-placement' => "left" %>
-    <button id="show-fronts-button" type="button" data-toggle="tooltip" data-placement="left" class="btn btn-default btn-sm glyphicon glyphicon-backward" title="Show all fronts"></button>
   </span>
+<% end %>
 
-  <div class="col-md-4 fronts">
-    <%= render partial: 'front_with_responses', locals: {front: @for_front, response: @response, motion: @motion} %>
+<div class="motion-fronts">
+  <div class="fronts-wrapper">
+  <% @motion.fronts.each do |f| %>
+    <div class="fronts">
+      <%= render partial: 'front_with_responses', locals: {front: f, response: @response, motion: @motion} %>
+    </div>
+  <% end %>
   </div>
 
-  <div class="col-md-4 fronts">
-    <%= render partial: 'front_with_responses', locals: {front: @neutral_front, response: @response, motion: @motion} %>
-  </div>
-
-  <div class="col-md-4 fronts">
-    <%= render partial: 'front_with_responses', locals: {front: @against_front, response: @response, motion: @motion} %>
-  </div>
 </div>

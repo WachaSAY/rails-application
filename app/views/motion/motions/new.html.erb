@@ -9,6 +9,27 @@
       <%= f.text_field :subject, autofocus: true, class: 'form-control' %>
     </div>
   </div>
+  <br>
+
+  <div class="form-group">
+    <label class="col-md-3 control-label">Fronts Options</label>
+
+    <%= f.label :default_fronts_enabled, 'Create Default fronts(For, Neutral, Against) with motion?', class: 'col-md-3 col-md-offset-0' %>
+    <div class="col-md-1">
+      <div class="slideThree" style="margin: 10px auto;">
+        <%= f.check_box :default_fronts_enabled, class: 'form-control', checked: true %>
+        <label for="motion_default_fronts_enabled"></label>
+      </div>
+    </div>
+
+    <%= f.label :multiple_fronts_enabled, 'Allow users to create multiple fronts?', class: 'col-md-3 col-md-offset-1' %>
+    <div class="col-md-1">
+      <div class="slideThree" style="margin: 10px auto;">
+        <%= f.check_box :multiple_fronts_enabled, class: 'form-control' %>
+        <label for="motion_multiple_fronts_enabled"></label>
+      </div>
+    </div>
+  </div>
 
   <div class="form-group">
     <%= f.label :description, class: 'col-md-3 control-label' %>

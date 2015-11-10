@@ -15,6 +15,7 @@ class Motion::MotionsController < ApplicationController
     @for_front = @motion.fronts.where(category: 0).limit(1).first
     @against_front = @motion.fronts.where(category: 1).limit(1).first
     @neutral_front = @motion.fronts.where(category: 2).limit(1).first
+    @common_front = @motion.fronts.where(category: 4).limit(1).first
     @response = Response.new
   end
 
@@ -48,7 +49,7 @@ class Motion::MotionsController < ApplicationController
   private
 
   def motion_params
-    params.require(:motion).permit(:subject, :description)
+    params.require(:motion).permit(:subject, :description, :default_fronts_enabled, :multiple_fronts_enabled)
   end
 
   def fetch_motion

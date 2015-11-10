@@ -19,6 +19,8 @@
  *= require plugins/char_counter.min.css
  *= require plugins/code_view.min.css
  *= require main.scss
+
+ *= require css3-checkboxes.css
  */
 
 @import "bootstrap-sprockets";
@@ -40,6 +42,7 @@ body {
 .add-front-plus-sign {
   position: relative;
   width: 0;
+  right: -10px;
 }
 
 footer {
@@ -220,5 +223,23 @@ footer {
 .panel-height-restricted:hover {
   .hover-info {
     display: block;
+  };
+}
+
+.motion-fronts {
+  width: 100%;
+  max-height: 400px;
+  overflow: auto;
+
+  .fronts-wrapper {
+    margin-right: -30000px;
+    float: left;
+  };
+
+  .fronts {
+    display: inline-flex;
+    width: 21em;
+
+    .panel { width: 100%; };
   };
 }
