@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable,
          :lockable
-  devise :omniauthable, omniauth_providers: [:facebook]
+  devise :omniauthable, omniauth_providers: [:facebook, :google_oauth2]
 
   # Virtual attribute for authenticating by either username or email
   # This is in addition to a real persisted field like 'username'
@@ -31,36 +31,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  # def self.from_omniauth(auth)
-  #   user = where(provider: auth.provider, uid: auth.uid).limit(1).first
-  #   (return user) if user
-
-  #   user = User.find_by(email: auth.info.email)
-  #   if user
-  #     user.update_attributes(provider: auth.provider, uid: auth.uid) and return
-  #   end
-
-  #   password = Devise.friendly_token[0,20]
-  #   user = User.new({
-  #     email: auth.info.email,
-  #     username: auth.info.email,
-  #     password: password,
-  #     provider: auth.provider,
-  #     uid: auth.uid,
-  #     first_name: auth.info.name,   # assuming the user model has a name
-  #     confirmation_token: Devise.friendly_token[0,20],
-  #     confirmation_sent_at: Time.current,
-  #     confirmed_at: Time.current
-  #   })
-
-  #   # user.skip_confirmation!
-  #   if user.save
-  #     AuthorizationMailer.omniauth_registration(user, password).deliver_now
-  #   end
-  #   user
-  # end
-
-
   def self.from_omniauth(auth, current_user)
     authorization = Authorization.where(provider: auth.provider,
                                         uid: auth.uid.to_s # ,
@@ -75,12 +45,12 @@ class User < ActiveRecord::Base
         user.skip_confirmation!
         password = user.set_password
         user.fetch_details(auth)
-        user.save
+        if user.save
+          AuthorizationMailer.omniauth_registration(user, password).deliver_now
+        end
       end
       authorization.user = user
-      if authorization.save
-        AuthorizationMailer.omniauth_registration(user, password).deliver_now
-      end
+      authorization.save
     end
     authorization.user
   end

@@ -244,6 +244,9 @@ Devise.setup do |config|
                   scope: 'email, user_likes, public_profile',
                   info_fields: 'first_name, last_name, email'
 
+  config.omniauth :google_oauth2, "74500625821-spjr1daajkjakr0qf6fk7mm4upkvdbs5.apps.googleusercontent.com",
+   "ub5elVaQPyNARkAL6_ZxQFbI", { access_type: 'online', approval_prompt: '', scope: 'userinfo.email,userinfo.profile' }
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
