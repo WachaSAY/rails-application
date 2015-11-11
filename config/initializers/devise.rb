@@ -12,7 +12,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.mailer_sender = 'no-reply@wachasay.com'
 
   # Configure the class responsible to send e-mails.
   config.mailer = 'UserMailer'
@@ -240,7 +240,9 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
 
-  config.omniauth :facebook, "1003507639695543", "66220596f1363b594c40b1195a8279b2", scope: 'email', info_fields: 'email, name'
+  config.omniauth :facebook, "1003507639695543", "66220596f1363b594c40b1195a8279b2",
+                  scope: 'email, user_likes, public_profile',
+                  info_fields: 'first_name, last_name, email'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

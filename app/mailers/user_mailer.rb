@@ -23,4 +23,5 @@ class UserMailer < Devise::Mailer
     opts[:subject] = 'Unlock Account Instructions | WachaSAY'
     super
   end
+
 end

@@ -88,6 +88,7 @@
               <li><%= link_to 'My Motions', motions_path %></li>
               <li role="separator" class="divider"></li>
               <li><%= button_to 'Logout', destroy_user_session_path, method: :delete, class: 'btn btn-sm btn-danger col-sm-offset-1 col-md-10' %></li>
+              <li><%= link_to 'Logout FB', cancel_user_registration_path, class: 'btn btn-sm btn-primary col-sm-offset-1 col-md-10' %></li>
             </ul>
           </li>
 
