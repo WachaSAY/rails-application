@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable,
          :lockable
-  devise :omniauthable, omniauth_providers: [:facebook, :google_oauth2]
+  devise :omniauthable, omniauth_providers: [:facebook, :google_oauth2, :twitter]
 
   # Virtual attribute for authenticating by either username or email
   # This is in addition to a real persisted field like 'username'
@@ -25,19 +25,21 @@ class User < ActiveRecord::Base
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
-      where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
+      where(conditions).where(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }]).first
     else
       where(conditions).first
     end
   end
 
-  def self.from_omniauth(auth, current_user)
+  def self.from_omniauth(auth, current_user, authorization=nil)
     authorization = Authorization.where(provider: auth.provider,
                                         uid: auth.uid.to_s # ,
                                         # :token => auth.credentials.token,
                                         # :secret => auth.credentials.secret
-                                        ).first_or_initialize
-    authorization.profile_page = "facebook.com/#{auth.uid}" unless authorization.persisted?
+                                        ).first_or_initialize unless authorization
+
+    authorization.resolve_profile_page(auth) unless authorization.persisted?
+
     if authorization.user.blank?
       user = current_user.nil? ? User.where('email = ?', auth['info']['email']).first : current_user
       if user.blank?
@@ -68,5 +70,7 @@ class User < ActiveRecord::Base
   def set_password
     self.password = Devise.friendly_token[0, 20]
   end
+
+
 
 end

@@ -53,6 +53,38 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     alias_method k, :all
   end
 
+  # def twitter
+  #   auth = env['omniauth.auth']
+  #   authorization = Authorization.where(provider: auth.provider,
+  #                                       uid: auth.uid.to_s # ,
+  #                                       # :token => auth.credentials.token,
+  #                                       # :secret => auth.credentials.secret
+  #                                       )
+
+  #   if authorization.blank?
+  #     a = Authorization.new
+  #     a.provider = auth.provider
+  #     a.uid = auth.uid
+  #     a.save
+  #     render template: '/users/twitters/new', locals: { a_id: a.id, auth: auth.to_h }
+  #   else
+  #     user = User.from_omniauth(env['omniauth.auth'], current_user)
+  #     if user.persisted?
+  #       sign_in user
+  #       flash[:notice] = t('devise.omniauth_callbacks.success', kind: 'Twitter')
+  #       if user.sign_in_count == 1
+  #         redirect_to users_digest_path # first_login_path
+  #       else
+  #         redirect_to users_digest_path # cabinet_path
+  #       end
+  #     else
+  #       session['devise.user_attributes'] = user.attributes
+  #       redirect_to new_user_registration_url
+  #     end
+  #   end
+  # end
+
+
   # protected
 
   # The path used when OmniAuth fails
@@ -60,3 +92,4 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   #   super(scope)
   # end
 end
+

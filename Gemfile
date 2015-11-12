@@ -93,8 +93,12 @@ gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
 
 gem 'mini_magick', '~> 3.8.0'
 
+gem 'omniauth-oauth2', '~> 1.3.1' # Degraded from 1.4.1 to 1.3.1 to resolve google-oauth2 error
+
 gem 'omniauth-facebook', '~> 3.0.0'
 
 gem "omniauth-google-oauth2", '~> 0.2.8'
 
-gem 'omniauth-oauth2', '~> 1.3.1' # Degraded from 1.4.1 to 1.3.1 to resolve google-oauth2 error
+gem 'omniauth-twitter', '~> 1.2.1'
+
+

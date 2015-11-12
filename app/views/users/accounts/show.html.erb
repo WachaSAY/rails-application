@@ -43,6 +43,35 @@
   </div>
 </div>
 
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Social Plugin Associations</h3>
+  </div>
+  <div class="panel-body">
+    <% @user.authorizations.each do |a| %>
+      <div class="row">
+        <div class="col-md-3">
+          <% case a.provider %>
+            <% when 'facebook' then %>
+              <%= link_to "Facebook", '#', class: "btn btn-primary col-md-12" %>
+            <% when 'google_oauth2' then %>
+              <%= link_to "Google", '#', class: "btn btn-danger col-md-12" %>
+            <% when 'twitter' then %>
+              <%= link_to "Twitter", '#', class: "btn btn-info col-md-12" %>
+            <% else %>
+              <%= link_to "#{a.provider.to_s.titleize}", '#', class: "btn btn-default col-md-12" %>
+          <% end %>
+        </div>
+
+        <div class="col-md-7">
+          <%= link_to 'Go to Profile', a.profile_page, target: '_blank' %>
+        </div>
+      </div>
+      <br>
+    <% end %>
+  </div>
+</div>
+
 <div class="pull-right">
 <% if @user.id == current_user.id -%>
   <%= link_to 'Edit Personal Details', edit_users_account_path, class: 'btn btn-primary' %>
@@ -50,6 +79,8 @@
   <%= link_to 'Edit Account Details', edit_user_registration_path, class: 'btn btn-primary' %>
 <% end -%>
 </div>
+
+
 
 <!-- Trigger the modal with a button -->
 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#display-picture-modal"  id="display-picture-modal-trigger-button">Open Account Picture</button>

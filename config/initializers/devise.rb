@@ -242,10 +242,13 @@ Devise.setup do |config|
 
   config.omniauth :facebook, "1003507639695543", "66220596f1363b594c40b1195a8279b2",
                   scope: 'email, user_likes, public_profile',
-                  info_fields: 'first_name, last_name, email'
+                  info_fields: 'first_name, last_name, email, link, gender, timezone, verified'
 
   config.omniauth :google_oauth2, "74500625821-spjr1daajkjakr0qf6fk7mm4upkvdbs5.apps.googleusercontent.com",
    "ub5elVaQPyNARkAL6_ZxQFbI", { access_type: 'online', approval_prompt: '', scope: 'userinfo.email,userinfo.profile' }
+
+  config.omniauth :twitter, "uOqhSDmPrMvmGw9noF64hLCOU",
+    "e6D9t4T1jtAJKF9C9q3o1FdUlrhYgH4a4wYfxuP64paaeU0l7N"
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
